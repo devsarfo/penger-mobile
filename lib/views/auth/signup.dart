@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:penger/controllers/auth.dart';
 import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
 import 'package:penger/resources/app_spacing.dart';
 import 'package:penger/resources/app_strings.dart';
 import 'package:penger/resources/app_styles.dart';
+import 'package:penger/utils/helper.dart';
 import 'package:penger/views/components/form/checkbox_input.dart';
 import 'package:penger/views/components/form/text_input.dart';
 import 'package:penger/views/components/ui/button.dart';
@@ -26,6 +28,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final passwordFocus = FocusNode();
 
   bool isLoading = false;
+  bool hasAgreed = false;
+
+  Map<String, dynamic> errors = {};
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +42,9 @@ class _SignupScreenState extends State<SignupScreen> {
           centerTitle: true,
           backgroundColor: AppColours.bgColour,
           title: Text(AppStrings.signUp, style: AppStyles.appTitle()),
-          leading: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Icon(Icons.arrow_back),
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back),
           ),
         ),
         body: Form(
@@ -47,7 +52,9 @@ class _SignupScreenState extends State<SignupScreen> {
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
+              AppSpacing.vertical(size: 48),
               TextInputComponent(
+                error: errors['name']?.join(', '),
                 isEnabled: !isLoading,
                 isRequired: true,
                 textInputType: TextInputType.name,
@@ -60,6 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               AppSpacing.vertical(),
               TextInputComponent(
+                error: errors['email']?.join(', '),
                 isEnabled: !isLoading,
                 isRequired: true,
                 textInputType: TextInputType.emailAddress,
@@ -72,19 +80,19 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               AppSpacing.vertical(),
               TextInputComponent(
+                error: errors['password']?.join(', '),
                 isEnabled: !isLoading,
                 isRequired: true,
                 focusNode: passwordFocus,
                 label: AppStrings.password,
                 textEditingController: passwordEditingController,
                 isPassword: true,
-                onFieldSubmitted: (value) =>
-                    FocusScope.of(context).unfocus(),
+                onFieldSubmitted: (value) => FocusScope.of(context).unfocus(),
                 textInputAction: TextInputAction.done,
               ),
               AppSpacing.vertical(),
               CheckboxInputComponent(
-                isEnabled: !isLoading,
+                  isEnabled: !isLoading,
                   label: Text.rich(
                       style: AppStyles.medium(size: 14),
                       TextSpan(text: AppStrings.agreeText, children: [
@@ -94,12 +102,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             style: AppStyles.medium(
                                 size: 14, color: AppColours.primaryColour))
                       ])),
-                  value: false,
-                  onChanged: (value) {
-                    print(value);
-                  }),
+                  value: hasAgreed,
+                  onChanged: (value) => setState(() => hasAgreed = value)),
               AppSpacing.vertical(),
-              ButtonComponent(isLoading: isLoading, label: AppStrings.signUp, onPressed: signup),
+              ButtonComponent(
+                  isLoading: isLoading,
+                  label: AppStrings.signUp,
+                  onPressed: signup),
               AppSpacing.vertical(size: 16),
               Text(AppStrings.orWith,
                   textAlign: TextAlign.center,
@@ -119,16 +128,19 @@ class _SignupScreenState extends State<SignupScreen> {
               Text.rich(
                   textAlign: TextAlign.center,
                   style: AppStyles.medium(size: 16),
-                  TextSpan(text: AppStrings.alreadyHaveAnAccount, children: [
-                    WidgetSpan(child: AppSpacing.horizontal(size: 4)),
-                    TextSpan(
-                        text: AppStrings.login,
-                        style: AppStyles.medium(
-                                size: 16, color: AppColours.primaryColour)
-                            .copyWith(
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColours.primaryColour))
-                  ]))
+                  TextSpan(
+                      text: AppStrings.alreadyHaveAnAccount,
+                      style: AppStyles.medium(color: AppColours.light20),
+                      children: [
+                        WidgetSpan(child: AppSpacing.horizontal(size: 4)),
+                        TextSpan(
+                            text: AppStrings.login,
+                            style: AppStyles.medium(
+                                    size: 16, color: AppColours.primaryColour)
+                                .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColours.primaryColour))
+                      ]))
             ],
           ),
         ),
@@ -136,19 +148,38 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  void signup() {
+  Future<void> signup() async {
+    setState(() => errors = {});
+
     FocusScope.of(context).unfocus();
-    if(!formKey.currentState!.validate()){
+
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (!hasAgreed) {
+      Helper.snackBar(context, message: AppStrings.inputIsRequired.replaceAll(":input", AppStrings.termsAndPrivacy), isSuccess: false);
       return;
     }
 
     setState(() => isLoading = true);
 
-    Future.delayed(const Duration(seconds: 5), () {
-      print("success");
-      setState(() => isLoading = false);
-    });
+    var result = await AuthController.register(
+        nameEditingController.text.trim(),
+        emailEditingController.text.trim(),
+        passwordEditingController.text);
 
+    setState(() => isLoading = false);
 
+    if (!result.isSuccess) {
+      Helper.snackBar(context, message: result.message, isSuccess: false);
+      if (result.errors != null) {
+        errors = result.errors!;
+      }
+
+      return;
+    }
+
+    Navigator.of(context).pushNamed(AppRoutes.verification);
   }
 }

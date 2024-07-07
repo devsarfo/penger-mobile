@@ -9,6 +9,7 @@ class AppStrings {
   static String signUp = 'Sign Up';
   static String signUpWithGoogle = 'Sign Up with Google';
   static String login = 'Login';
+  static String verification = 'Verification';
   static String name = 'Name';
   static String emailAddress = 'E-mail Address';
   static String password = 'Password';
@@ -17,4 +18,5 @@ class AppStrings {
   static String orWith = 'Or with';
   static String alreadyHaveAnAccount = 'Already have an account?';
   static String inputIsRequired = ':input is required';
+  static String anErrorOccurredTryAgain = 'Oops! an error occurred, try again';
 }
