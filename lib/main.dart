@@ -3,6 +3,7 @@ import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
 import 'package:penger/resources/app_strings.dart';
 import 'package:penger/views/auth/signup.dart';
+import 'package:penger/views/auth/verification.dart';
 import 'package:penger/views/onboarding/splash.dart';
 import 'package:penger/views/onboarding/walkthrough.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.splash: (context) => const SplashScreen(),
         AppRoutes.walkthrough: (context) => const WalkthroughScreen(),
         AppRoutes.signup: (context) => const SignupScreen(),
+        AppRoutes.verification: (context) => const VerificationScreen(),
       },
     );
   }

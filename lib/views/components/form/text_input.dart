@@ -7,6 +7,7 @@ class TextInputComponent extends StatefulWidget {
   final bool isRequired;
   final bool isEnabled;
   final String label;
+  final String? error;
   final TextEditingController textEditingController;
   final bool isPassword;
   final ValueChanged<String>? onFieldSubmitted;
@@ -14,7 +15,7 @@ class TextInputComponent extends StatefulWidget {
   final FocusNode? focusNode;
   final TextInputType? textInputType;
 
-  const TextInputComponent({super.key, required this.label, this.isPassword = false, required this.textEditingController, this.onFieldSubmitted, this.textInputAction, this.focusNode, this.textInputType, this.isRequired = false, this.isEnabled = true});
+  const TextInputComponent({super.key, required this.label, this.isPassword = false, required this.textEditingController, this.onFieldSubmitted, this.textInputAction, this.focusNode, this.textInputType, this.isRequired = false, this.isEnabled = true, this.error});
 
   @override
   State<TextInputComponent> createState() => _TextInputComponentState();
@@ -26,11 +27,16 @@ class _TextInputComponentState extends State<TextInputComponent> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.textEditingController,
       enabled: widget.isEnabled,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
         if(!widget.isRequired) return null;
         if(value == null || value.isEmpty){
+          return AppStrings.inputIsRequired.replaceAll(":input", widget.label);
+        }
+
+        if(!widget.isPassword && value.trim().isEmpty){
           return AppStrings.inputIsRequired.replaceAll(":input", widget.label);
         }
         return null;
@@ -42,6 +48,7 @@ class _TextInputComponentState extends State<TextInputComponent> {
       textInputAction: widget.textInputAction ?? TextInputAction.next,
       decoration: InputDecoration(
           labelText: widget.label,
+          errorText: widget.error,
           labelStyle: TextStyle(color: AppColours.light20),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -55,9 +62,9 @@ class _TextInputComponentState extends State<TextInputComponent> {
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(color: AppColours.primaryColour)),
           suffixIcon: widget.isPassword
-              ? InkWell(
-            onTap: togglePassword,
-            child: Icon(
+              ? IconButton(
+            onPressed: togglePassword,
+            icon: Icon(
                 showPassword
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
