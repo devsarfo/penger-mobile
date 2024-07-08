@@ -16,7 +16,7 @@ class AuthController {
 
       return Result(isSuccess: true, message: 'Testing');
     }  on DioException catch (e) {
-      final message =  e.response?.data['message'] ?? AppStrings.anErrorOccurredTryAgain;
+      final message = ApiService.errorMessage(e);
       final errors = e.response?.data['errors'];
 
       return Result(isSuccess: false, message: message, errors: errors);

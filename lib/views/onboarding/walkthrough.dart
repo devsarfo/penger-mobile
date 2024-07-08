@@ -15,8 +15,8 @@ class WalkthroughScreen extends StatefulWidget {
 }
 
 class _WalkthroughScreenState extends State<WalkthroughScreen> {
-  PageController pageController = PageController();
-  List<SlideModel> slides = [
+  final PageController _pageController = PageController();
+  final List<SlideModel> _slides = [
     SlideModel(AppStrings.walkthroughTitle1, AppStrings.walkthroughDescription1,
         "assets/images/walkthrough1.png"),
     SlideModel(AppStrings.walkthroughTitle2, AppStrings.walkthroughDescription2,
@@ -24,7 +24,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     SlideModel(AppStrings.walkthroughTitle3, AppStrings.walkthroughDescription3,
         "assets/images/walkthrough3.png")
   ];
-  int currentPage = 0;
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -57,22 +57,22 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        for (int i = 0; i < slides.length; i++) ...[
+        for (int i = 0; i < _slides.length; i++) ...[
           InkWell(
             onTap: () {
-              if (i != currentPage) {
-                pageController.animateToPage(i,
+              if (i != _currentPage) {
+                _pageController.animateToPage(i,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOut);
               }
             },
             child: Icon(Icons.circle,
-                size: currentPage == i ? 16 : 8,
-                color: currentPage == i
+                size: _currentPage == i ? 16 : 8,
+                color: _currentPage == i
                     ? AppColours.primaryColour
                     : AppColours.primaryColourLight),
           ),
-          if (i < slides.length - 1) AppSpacing.horizontal(size: 8),
+          if (i < _slides.length - 1) AppSpacing.horizontal(size: 8),
         ]
       ],
     );
@@ -104,23 +104,23 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           children: [
             AppSpacing.vertical(size: 48),
             Center(
-              child: Image.asset(slides[index].image,
+              child: Image.asset(_slides[index].image,
                   width: MediaQuery.of(context).size.width / 1.5),
             ),
             AppSpacing.vertical(),
-            Text(slides[index].title,
+            Text(_slides[index].title,
                 style: AppStyles.title1(), textAlign: TextAlign.center),
             AppSpacing.vertical(size: 16),
-            Text(slides[index].description,
+            Text(_slides[index].description,
                 style: AppStyles.regular1(
                     color: AppColours.light20, weight: FontWeight.w500),
                 textAlign: TextAlign.center),
           ],
         );
       },
-      controller: pageController,
-      itemCount: slides.length,
-      onPageChanged: (index) => setState(() => currentPage = index),
+      controller: _pageController,
+      itemCount: _slides.length,
+      onPageChanged: (index) => setState(() => _currentPage = index),
     );
   }
 }
