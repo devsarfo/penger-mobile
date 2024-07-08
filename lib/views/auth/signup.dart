@@ -8,6 +8,7 @@ import 'package:penger/resources/app_styles.dart';
 import 'package:penger/utils/helper.dart';
 import 'package:penger/views/components/form/checkbox_input.dart';
 import 'package:penger/views/components/form/text_input.dart';
+import 'package:penger/views/components/ui/app_bar.dart';
 import 'package:penger/views/components/ui/button.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -18,19 +19,19 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final formKey = GlobalKey<FormState>();
-  final nameEditingController = TextEditingController();
-  final emailEditingController = TextEditingController();
-  final passwordEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameEditingController = TextEditingController();
+  final _emailEditingController = TextEditingController();
+  final _passwordEditingController = TextEditingController();
 
-  final nameFocus = FocusNode();
-  final emailFocus = FocusNode();
-  final passwordFocus = FocusNode();
+  final _nameFocus = FocusNode();
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
 
-  bool isLoading = false;
-  bool hasAgreed = false;
+  bool _isLoading = false;
+  bool _hasAgreed = false;
 
-  Map<String, dynamic> errors = {};
+  Map<String, dynamic> _errors = {};
 
   @override
   Widget build(BuildContext context) {
@@ -38,77 +39,19 @@ class _SignupScreenState extends State<SignupScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColours.bgColour,
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: AppColours.bgColour,
-          title: Text(AppStrings.signUp, style: AppStyles.appTitle()),
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back),
-          ),
-        ),
+        appBar: buildAppBar(context, AppStrings.signUp),
         body: Form(
-          key: formKey,
+          key: _formKey,
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
               AppSpacing.vertical(size: 48),
-              TextInputComponent(
-                error: errors['name']?.join(', '),
-                isEnabled: !isLoading,
-                isRequired: true,
-                textInputType: TextInputType.name,
-                focusNode: nameFocus,
-                label: AppStrings.name,
-                textEditingController: nameEditingController,
-                onFieldSubmitted: (value) =>
-                    FocusScope.of(context).requestFocus(emailFocus),
-                textInputAction: TextInputAction.next,
-              ),
-              AppSpacing.vertical(),
-              TextInputComponent(
-                error: errors['email']?.join(', '),
-                isEnabled: !isLoading,
-                isRequired: true,
-                textInputType: TextInputType.emailAddress,
-                focusNode: emailFocus,
-                label: AppStrings.emailAddress,
-                textEditingController: emailEditingController,
-                onFieldSubmitted: (value) =>
-                    FocusScope.of(context).requestFocus(passwordFocus),
-                textInputAction: TextInputAction.next,
-              ),
-              AppSpacing.vertical(),
-              TextInputComponent(
-                error: errors['password']?.join(', '),
-                isEnabled: !isLoading,
-                isRequired: true,
-                focusNode: passwordFocus,
-                label: AppStrings.password,
-                textEditingController: passwordEditingController,
-                isPassword: true,
-                onFieldSubmitted: (value) => FocusScope.of(context).unfocus(),
-                textInputAction: TextInputAction.done,
-              ),
-              AppSpacing.vertical(),
-              CheckboxInputComponent(
-                  isEnabled: !isLoading,
-                  label: Text.rich(
-                      style: AppStyles.medium(size: 14),
-                      TextSpan(text: AppStrings.agreeText, children: [
-                        WidgetSpan(child: AppSpacing.horizontal(size: 4)),
-                        TextSpan(
-                            text: AppStrings.termsAndPrivacy,
-                            style: AppStyles.medium(
-                                size: 14, color: AppColours.primaryColour))
-                      ])),
-                  value: hasAgreed,
-                  onChanged: (value) => setState(() => hasAgreed = value)),
+              _signUpForm(),
               AppSpacing.vertical(),
               ButtonComponent(
-                  isLoading: isLoading,
+                  isLoading: _isLoading,
                   label: AppStrings.signUp,
-                  onPressed: signup),
+                  onPressed: _handleSignup),
               AppSpacing.vertical(size: 16),
               Text(AppStrings.orWith,
                   textAlign: TextAlign.center,
@@ -148,33 +91,91 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  Future<void> signup() async {
-    setState(() => errors = {});
+  Widget _signUpForm() {
+    return Column(
+      children: [
+        TextInputComponent(
+          error: _errors['name']?.join(', '),
+          isEnabled: !_isLoading,
+          isRequired: true,
+          textInputType: TextInputType.name,
+          focusNode: _nameFocus,
+          label: AppStrings.name,
+          textEditingController: _nameEditingController,
+          onFieldSubmitted: (value) =>
+              FocusScope.of(context).requestFocus(_emailFocus),
+          textInputAction: TextInputAction.next,
+        ),
+        AppSpacing.vertical(),
+        TextInputComponent(
+          error: _errors['email']?.join(', '),
+          isEnabled: !_isLoading,
+          isRequired: true,
+          textInputType: TextInputType.emailAddress,
+          focusNode: _emailFocus,
+          label: AppStrings.emailAddress,
+          textEditingController: _emailEditingController,
+          onFieldSubmitted: (value) =>
+              FocusScope.of(context).requestFocus(_passwordFocus),
+          textInputAction: TextInputAction.next,
+        ),
+        AppSpacing.vertical(),
+        TextInputComponent(
+          error: _errors['password']?.join(', '),
+          isEnabled: !_isLoading,
+          isRequired: true,
+          focusNode: _passwordFocus,
+          label: AppStrings.password,
+          textEditingController: _passwordEditingController,
+          isPassword: true,
+          onFieldSubmitted: (value) => FocusScope.of(context).unfocus(),
+          textInputAction: TextInputAction.done,
+        ),
+        AppSpacing.vertical(),
+        CheckboxInputComponent(
+            isEnabled: !_isLoading,
+            label: Text.rich(
+                style: AppStyles.medium(size: 14),
+                TextSpan(text: AppStrings.agreeText, children: [
+                  WidgetSpan(child: AppSpacing.horizontal(size: 4)),
+                  TextSpan(
+                      text: AppStrings.termsAndPrivacy,
+                      style: AppStyles.medium(
+                          size: 14, color: AppColours.primaryColour))
+                ])),
+            value: _hasAgreed,
+            onChanged: (value) => setState(() => _hasAgreed = value)),
+      ],
+    );
+  }
+
+  Future<void> _handleSignup() async {
+    setState(() => _errors = {});
 
     FocusScope.of(context).unfocus();
 
-    if (!formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    if (!hasAgreed) {
+    if (!_hasAgreed) {
       Helper.snackBar(context, message: AppStrings.inputIsRequired.replaceAll(":input", AppStrings.termsAndPrivacy), isSuccess: false);
       return;
     }
 
-    setState(() => isLoading = true);
+    setState(() => _isLoading = true);
 
     var result = await AuthController.register(
-        nameEditingController.text.trim(),
-        emailEditingController.text.trim(),
-        passwordEditingController.text);
+        _nameEditingController.text.trim(),
+        _emailEditingController.text.trim(),
+        _passwordEditingController.text);
 
-    setState(() => isLoading = false);
+    setState(() => _isLoading = false);
 
     if (!result.isSuccess) {
       Helper.snackBar(context, message: result.message, isSuccess: false);
       if (result.errors != null) {
-        errors = result.errors!;
+        setState(() => _errors = result.errors!);
       }
 
       return;
