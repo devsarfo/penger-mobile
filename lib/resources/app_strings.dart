@@ -9,6 +9,7 @@ class AppStrings {
   static String signUp = 'Sign Up';
   static String signUpWithGoogle = 'Sign Up with Google';
   static String login = 'Login';
+  static String logout = 'Logout';
   static String verification = 'Verification';
   static String verify = 'Verify';
   static String name = 'Name';
@@ -22,6 +23,8 @@ class AppStrings {
   static String anErrorOccurredTryAgain = 'Oops! an error occurred, try again';
   static String noInternetAccess = 'Sorry! you need an active internet connection';
   static String enterYourVerificationCode = 'Enter your Verification Code';
-  static String verificationCodeHint = 'We send verification code to your email :email. You can check your inbox.';
+  static String verificationCodeHint1 = 'We have sent a verification code to your email';
+  static String verificationCodeHint2 = 'You can check your inbox.';
   static String resendVerificationCodeHint = 'Did not receive the code? Send again';
+  static String notUserLogout = 'Not :user? Logout';
 }

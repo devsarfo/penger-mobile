@@ -14,6 +14,7 @@ Result<T> _$ResultFromJson<T>(
       isSuccess: json['isSuccess'] as bool,
       message: json['message'] as String,
       results: _$nullableGenericFromJson(json['results'], fromJsonT),
+      errors: json['errors'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$ResultToJson<T>(
@@ -24,6 +25,7 @@ Map<String, dynamic> _$ResultToJson<T>(
       'isSuccess': instance.isSuccess,
       'message': instance.message,
       'results': _$nullableGenericToJson(instance.results, toJsonT),
+      'errors': instance.errors,
     };
 
 T? _$nullableGenericFromJson<T>(
