@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:penger/resources/app_colours.dart';
-import 'package:penger/resources/app_routes.dart';
 import 'package:penger/resources/app_strings.dart';
 import 'package:penger/resources/app_styles.dart';
+import 'package:penger/utils/helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  void initApp() {
-    Future.delayed(
-        const Duration(seconds: 3),
-        () =>
-            Navigator.of(context).pushReplacementNamed(AppRoutes.walkthrough));
+  Future<void> initApp() async {
+    final route = await Helper.initialRoute();
+    Future.delayed(const Duration(seconds: 3), () => Navigator.of(context).pushReplacementNamed(route));
   }
 }

@@ -91,6 +91,19 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
+  @override
+  void dispose() {
+    _nameEditingController.dispose();
+    _emailEditingController.dispose();
+    _passwordEditingController.dispose();
+
+    _nameFocus.dispose();
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+
+    super.dispose();
+  }
+
   Widget _signUpForm() {
     return Column(
       children: [
