@@ -135,7 +135,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, AppRoutes.walkthrough);
+    Navigator.of(context).pushReplacementNamed(AppRoutes.walkthrough);
   }
 
   Future<void> _resend() async {
@@ -167,7 +167,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, AppRoutes.home);
+    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (Route<dynamic> route) => false);
   }
 
   void _startTimer() {
