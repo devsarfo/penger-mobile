@@ -9,16 +9,22 @@ class AppStrings {
   static String signUp = 'Sign Up';
   static String signUpWithGoogle = 'Sign Up with Google';
   static String login = 'Login';
+  static String continueText = 'Continue';
   static String logout = 'Logout';
   static String verification = 'Verification';
+  static String verificationCode = 'Verification Code';
   static String verify = 'Verify';
   static String name = 'Name';
   static String emailAddress = 'E-mail Address';
   static String password = 'Password';
+  static String passwordsDoNotMatch = 'Passwords do not match!';
+  static String newPassword = 'New Password';
+  static String retypeNewPassword = 'Retype New Password';
   static String agreeText = 'By signing up, you agree to the';
   static String termsAndPrivacy = 'Terms of Service and Privacy Policy';
   static String orWith = 'Or with';
   static String alreadyHaveAnAccount = 'Already have an account?';
+  static String dontHaveAnAccountYet = 'Don’t have an account yet?';
   static String inputIsRequired = ':input is required';
   static String anErrorOccurredTryAgain = 'Oops! an error occurred, try again';
   static String noInternetAccess = 'Sorry! you need an active internet connection';
@@ -27,4 +33,10 @@ class AppStrings {
   static String verificationCodeHint2 = 'You can check your inbox.';
   static String resendVerificationCodeHint = 'Did not receive the code? Send again';
   static String notUserLogout = 'Not :user? Logout';
+  static String forgotPassword = 'Forgot Password?';
+  static String forgotPasswordTitle = 'Forgot Password';
+  static String forgotPasswordHint = 'Don’t worry. Enter your email and we\'ll send you an OTP to reset your password.';
+  static String yourEmailIsOnTheWay = 'Your email is on the way';
+  static String yourEmailIsOnTheWayHint = 'Check your email :email and follow the instructions to reset your password using the verification code';
+  static String resetPassword = 'Reset Password';
 }

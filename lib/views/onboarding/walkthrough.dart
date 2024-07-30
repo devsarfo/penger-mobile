@@ -89,7 +89,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         ButtonComponent(
             type: ButtonType.secondary,
             label: AppStrings.login,
-            onPressed: () => {}
+            onPressed: () => Navigator.of(context).pushNamed(AppRoutes.login)
         ),
       ],
     );

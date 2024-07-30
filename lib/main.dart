@@ -4,6 +4,10 @@ import 'package:penger/models/user.dart';
 import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
 import 'package:penger/resources/app_strings.dart';
+import 'package:penger/views/auth/forgot_password.dart';
+import 'package:penger/views/auth/forgot_password_sent.dart';
+import 'package:penger/views/auth/login.dart';
+import 'package:penger/views/auth/reset_password.dart';
 import 'package:penger/views/auth/signup.dart';
 import 'package:penger/views/auth/verification.dart';
 import 'package:penger/views/home.dart';
@@ -34,7 +38,11 @@ class MyApp extends StatelessWidget {
         AppRoutes.splash: (context) => const SplashScreen(),
         AppRoutes.walkthrough: (context) => const WalkthroughScreen(),
         AppRoutes.signup: (context) => const SignupScreen(),
+        AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.verification: (context) => const VerificationScreen(),
+        AppRoutes.forgotPassword: (context) => const ForgotPasswordScreen(),
+        AppRoutes.forgotPasswordSent: (context) => const ForgotPasswordSentScreen(),
+        AppRoutes.resetPassword: (context) => const ResetPasswordScreen(),
         AppRoutes.home: (context) => const HomeScreen(),
       },
     );

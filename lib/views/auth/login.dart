@@ -6,30 +6,27 @@ import 'package:penger/resources/app_spacing.dart';
 import 'package:penger/resources/app_strings.dart';
 import 'package:penger/resources/app_styles.dart';
 import 'package:penger/utils/helper.dart';
-import 'package:penger/views/components/form/checkbox_input.dart';
 import 'package:penger/views/components/form/text_input.dart';
 import 'package:penger/views/components/ui/app_bar.dart';
-import 'package:penger/views/components/ui/button.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import '../components/ui/button.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameEditingController = TextEditingController();
   final _emailEditingController = TextEditingController();
   final _passwordEditingController = TextEditingController();
 
-  final _nameFocus = FocusNode();
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
   bool _isLoading = false;
-  bool _hasAgreed = false;
 
   Map<String, dynamic> _errors = {};
 
@@ -39,52 +36,46 @@ class _SignupScreenState extends State<SignupScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: AppColours.bgColour,
-        appBar: buildAppBar(context, AppStrings.signUp),
+        appBar: buildAppBar(context, AppStrings.login),
         body: Form(
           key: _formKey,
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
               AppSpacing.vertical(size: 48),
-              _signUpForm(),
+              _loginForm(),
               AppSpacing.vertical(),
               ButtonComponent(
                   isLoading: _isLoading,
-                  label: AppStrings.signUp,
-                  onPressed: _handleSignup),
-              AppSpacing.vertical(size: 16),
-              Text(AppStrings.orWith,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.bold(size: 14, color: AppColours.light20)),
-              AppSpacing.vertical(size: 16),
-              ButtonComponent(
-                  type: ButtonType.light,
-                  label: AppStrings.signUpWithGoogle,
-                  icon: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Image.asset("assets/images/google.png"),
-                  ),
-                  onPressed: () {
-                    print("signUpWithGoogle");
-                  }),
+                  label: AppStrings.login,
+                  onPressed: _handleLogin),
+              AppSpacing.vertical(size: 24),
+              InkWell(
+                onTap: () => Navigator.of(context).pushNamed(AppRoutes.forgotPassword),
+                child: Text(AppStrings.forgotPassword,
+                    textAlign: TextAlign.center,
+                    style: AppStyles.title3(color: AppColours.primaryColour)),
+              ),
               AppSpacing.vertical(),
               Text.rich(
                   textAlign: TextAlign.center,
                   style: AppStyles.medium(size: 16),
                   TextSpan(
-                      text: AppStrings.alreadyHaveAnAccount,
+                      text: AppStrings.dontHaveAnAccountYet,
                       style: AppStyles.medium(color: AppColours.light20),
                       children: [
                         WidgetSpan(child: AppSpacing.horizontal(size: 4)),
-                        WidgetSpan(child: InkWell(
-                          onTap: () => Navigator.of(context).pushReplacementNamed(AppRoutes.login),
+                        WidgetSpan(
+                            child: InkWell(
+                          onTap: () => Navigator.of(context)
+                              .pushReplacementNamed(AppRoutes.signup),
                           child: Text(
-                            AppStrings.login,
+                            AppStrings.signUp,
                             style: AppStyles.medium(
-                                size: 16, color: AppColours.primaryColour)
+                                    size: 16, color: AppColours.primaryColour)
                                 .copyWith(
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColours.primaryColour),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColours.primaryColour),
                           ),
                         ))
                       ]))
@@ -97,33 +88,18 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    _nameEditingController.dispose();
     _emailEditingController.dispose();
     _passwordEditingController.dispose();
 
-    _nameFocus.dispose();
     _emailFocus.dispose();
     _passwordFocus.dispose();
 
     super.dispose();
   }
 
-  Widget _signUpForm() {
+  Widget _loginForm() {
     return Column(
       children: [
-        TextInputComponent(
-          error: _errors['name']?.join(', '),
-          isEnabled: !_isLoading,
-          isRequired: true,
-          textInputType: TextInputType.name,
-          focusNode: _nameFocus,
-          label: AppStrings.name,
-          textEditingController: _nameEditingController,
-          onFieldSubmitted: (value) =>
-              FocusScope.of(context).requestFocus(_emailFocus),
-          textInputAction: TextInputAction.next,
-        ),
-        AppSpacing.vertical(),
         TextInputComponent(
           error: _errors['email']?.join(', '),
           isEnabled: !_isLoading,
@@ -149,24 +125,11 @@ class _SignupScreenState extends State<SignupScreen> {
           textInputAction: TextInputAction.done,
         ),
         AppSpacing.vertical(),
-        CheckboxInputComponent(
-            isEnabled: !_isLoading,
-            label: Text.rich(
-                style: AppStyles.medium(size: 14),
-                TextSpan(text: AppStrings.agreeText, children: [
-                  WidgetSpan(child: AppSpacing.horizontal(size: 4)),
-                  TextSpan(
-                      text: AppStrings.termsAndPrivacy,
-                      style: AppStyles.medium(
-                          size: 14, color: AppColours.primaryColour))
-                ])),
-            value: _hasAgreed,
-            onChanged: (value) => setState(() => _hasAgreed = value)),
       ],
     );
   }
 
-  Future<void> _handleSignup() async {
+  Future<void> _handleLogin() async {
     setState(() => _errors = {});
 
     FocusScope.of(context).unfocus();
@@ -175,17 +138,10 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    if (!_hasAgreed) {
-      Helper.snackBar(context, message: AppStrings.inputIsRequired.replaceAll(":input", AppStrings.termsAndPrivacy), isSuccess: false);
-      return;
-    }
-
     setState(() => _isLoading = true);
 
-    var result = await AuthController.register(
-        _nameEditingController.text.trim(),
-        _emailEditingController.text.trim(),
-        _passwordEditingController.text);
+    var result = await AuthController.login(
+        _emailEditingController.text.trim(), _passwordEditingController.text);
 
     setState(() => _isLoading = false);
 
@@ -198,6 +154,10 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
-    Navigator.of(context).pushNamed(AppRoutes.verification);
+    if (result.results?.emailVerifiedAt == null) {
+      Navigator.of(context).pushNamed(AppRoutes.verification);
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (Route<dynamic>route) => false);
+    }
   }
 }
