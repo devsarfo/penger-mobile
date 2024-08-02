@@ -32,6 +32,10 @@ class AppStyles {
     return TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w600);
   }
 
+  static TextStyle semibold({double size = 18, Color color = Colors.black}) {
+    return TextStyle(color: color, fontSize: size, fontWeight: FontWeight.w600);
+  }
+
   static TextStyle snackBar({double size = 18, Color color = Colors.white}) =>
       medium(size: size, color: color);
 }

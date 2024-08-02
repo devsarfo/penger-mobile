@@ -39,4 +39,7 @@ class AppStrings {
   static String yourEmailIsOnTheWay = 'Your email is on the way';
   static String yourEmailIsOnTheWayHint = 'Check your email :email and follow the instructions to reset your password using the verification code';
   static String resetPassword = 'Reset Password';
+  static String letSetupYourPin = 'Let\'s setup your PIN';
+  static String retypeYourPinAgain = 'Retype your PIN';
+  static String pinsDoNotMatch = 'PINs do not match!';
 }

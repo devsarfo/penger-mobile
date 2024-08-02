@@ -8,6 +8,7 @@ import 'package:penger/views/auth/forgot_password.dart';
 import 'package:penger/views/auth/forgot_password_sent.dart';
 import 'package:penger/views/auth/login.dart';
 import 'package:penger/views/auth/reset_password.dart';
+import 'package:penger/views/auth/setup_pin.dart';
 import 'package:penger/views/auth/signup.dart';
 import 'package:penger/views/auth/verification.dart';
 import 'package:penger/views/home.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.forgotPassword: (context) => const ForgotPasswordScreen(),
         AppRoutes.forgotPasswordSent: (context) => const ForgotPasswordSentScreen(),
         AppRoutes.resetPassword: (context) => const ResetPasswordScreen(),
+        AppRoutes.setupPin: (context) => const SetupPinScreen(),
         AppRoutes.home: (context) => const HomeScreen(),
       },
     );
