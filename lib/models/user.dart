@@ -26,5 +26,8 @@ class UserModel{
   @HiveField(6)
   late String token;
 
+  @HiveField(7)
+  String? pin;
+
   static String userBox = 'users';
 }

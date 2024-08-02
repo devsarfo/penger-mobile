@@ -142,4 +142,13 @@ class AuthController {
     }
   }
 
+  static Future<Result> setPin(String pin) async {
+    try {
+      final user = AuthService.setPin(pin);
+      return Result(isSuccess: true, message: "");
+    } catch (e) {
+      return Result(isSuccess: false, message: AppStrings.anErrorOccurredTryAgain);
+    }
+  }
+
 }

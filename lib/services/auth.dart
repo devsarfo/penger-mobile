@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:bcrypt/bcrypt.dart';
 import 'package:hive/hive.dart';
 import 'package:penger/models/user.dart';
 
@@ -31,6 +34,19 @@ class AuthService {
     userModel.emailVerifiedAt = user['email_verified_at'] != null ? DateTime.parse(user['email_verified_at']) :  userModel.emailVerifiedAt;
     userModel.createdAt = user['created_at'] != null ? DateTime.parse(user['created_at']) :  userModel.createdAt;
     userModel.updatedAt = user['updated_at'] != null ? DateTime.parse(user['updated_at']) :  userModel.updatedAt;
+
+    await userBox.put(0, userModel);
+    return userModel;
+  }
+
+  static Future<UserModel> setPin(String pin) async {
+    final userBox = await Hive.openBox(UserModel.userBox);
+    if(userBox.isEmpty) throw Exception("User does not exist");
+
+    var userModel = userBox.get(0);
+
+    final hashed = BCrypt.hashpw(pin, BCrypt.gensalt());
+    userModel.pin = hashed;
 
     await userBox.put(0, userModel);
     return userModel;

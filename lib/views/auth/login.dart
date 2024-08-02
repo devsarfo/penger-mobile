@@ -154,10 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    if (result.results?.emailVerifiedAt == null) {
-      Navigator.of(context).pushNamed(AppRoutes.verification);
-    } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (Route<dynamic>route) => false);
-    }
+    final route = await Helper.initialRoute();
+    Navigator.of(context).pushNamedAndRemoveUntil(route, (Route<dynamic>route) => false);
   }
 }

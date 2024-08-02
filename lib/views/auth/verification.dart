@@ -167,7 +167,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
       return;
     }
 
-    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (Route<dynamic> route) => false);
+    final route = await Helper.initialRoute();
+    Navigator.of(context).pushNamedAndRemoveUntil(route, (Route<dynamic> route) => false);
   }
 
   void _startTimer() {

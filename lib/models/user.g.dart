@@ -23,13 +23,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..emailVerifiedAt = fields[3] as DateTime?
       ..createdAt = fields[4] as DateTime
       ..updatedAt = fields[5] as DateTime
-      ..token = fields[6] as String;
+      ..token = fields[6] as String
+      ..pin = fields[7] as String?;
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -43,7 +44,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(5)
       ..write(obj.updatedAt)
       ..writeByte(6)
-      ..write(obj.token);
+      ..write(obj.token)
+      ..writeByte(7)
+      ..write(obj.pin);
   }
 
   @override
