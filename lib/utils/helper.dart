@@ -23,6 +23,6 @@ class Helper {
        return AppRoutes.setupPin;
      }
 
-     return AppRoutes.home;
+     return AppRoutes.setupAccount;
    }
 }
