@@ -4,12 +4,15 @@ import 'package:penger/models/user.dart';
 import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
 import 'package:penger/resources/app_strings.dart';
+import 'package:penger/views/account/add_account.dart';
+import 'package:penger/views/account/setup_account.dart';
 import 'package:penger/views/auth/forgot_password.dart';
 import 'package:penger/views/auth/forgot_password_sent.dart';
 import 'package:penger/views/auth/login.dart';
 import 'package:penger/views/auth/reset_password.dart';
 import 'package:penger/views/auth/setup_pin.dart';
 import 'package:penger/views/auth/signup.dart';
+import 'package:penger/views/auth/signup_success.dart';
 import 'package:penger/views/auth/verification.dart';
 import 'package:penger/views/home.dart';
 import 'package:penger/views/onboarding/splash.dart';
@@ -46,6 +49,9 @@ class MyApp extends StatelessWidget {
         AppRoutes.resetPassword: (context) => const ResetPasswordScreen(),
         AppRoutes.setupPin: (context) => const SetupPinScreen(),
         AppRoutes.home: (context) => const HomeScreen(),
+        AppRoutes.setupAccount: (context) => const SetupAccountScreen(),
+        AppRoutes.addAccount: (context) => const AddAccountScreen(),
+        AppRoutes.signupSuccess: (context) => const SignupSuccessScreen(),
       },
     );
   }
