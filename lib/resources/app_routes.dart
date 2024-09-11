@@ -9,4 +9,7 @@ class AppRoutes {
   static String resetPassword = '/reset-password';
   static String setupPin = '/setup-pin';
   static String home = '/home';
+  static String setupAccount = '/setup-account';
+  static String addAccount = '/add-account';
+  static String signupSuccess = '/signup-success';
 }

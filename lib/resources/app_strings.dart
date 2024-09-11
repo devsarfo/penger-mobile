@@ -42,4 +42,11 @@ class AppStrings {
   static String letSetupYourPin = 'Let\'s setup your PIN';
   static String retypeYourPinAgain = 'Retype your PIN';
   static String pinsDoNotMatch = 'PINs do not match!';
+  static String letsSetupYourAccount = 'Let\'s setup your account!';
+  static String letsSetupYourAccountHint = 'Account can be your bank, credit card or your wallet.';
+  static String addNewAccount = 'Add New Account';
+  static String balance = 'Balance';
+  static String currency = 'Currency';
+  static String accountType = 'Account Type';
+  static String youAreSet = 'You are set!';
 }
