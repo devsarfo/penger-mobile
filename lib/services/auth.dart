@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bcrypt/bcrypt.dart';
 import 'package:hive/hive.dart';
 import 'package:penger/models/user.dart';

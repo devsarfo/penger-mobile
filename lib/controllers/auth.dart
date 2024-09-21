@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:penger/controllers/account.dart';
 import 'package:penger/models/user.dart';
 import 'package:penger/resources/app_strings.dart';
+import 'package:penger/services/account.dart';
 import 'package:penger/services/api.dart';
 import 'package:penger/services/api_routes.dart';
 import 'package:penger/models/result.dart';
 import 'package:penger/services/auth.dart';
 
 class AuthController {
+
   static Future<Result> register(String name, String email, String password) async {
     try {
       final response = await ApiService.post(ApiRoutes.registerUrl, {
@@ -39,6 +42,9 @@ class AuthController {
       final results = response.data['results'];
       final userModel = await AuthService.create(results['user'], results['token']);
 
+      // TODO: Improve Load Account
+      await AccountController.load();
+
       return Result(isSuccess: true, message: response.data['message'], results: userModel);
     }  on DioException catch (e) {
       final message = ApiService.errorMessage(e);
@@ -55,6 +61,7 @@ class AuthController {
       final response = await ApiService.post(ApiRoutes.logoutUrl, {});
 
       await AuthService.delete();
+      await AccountService.delete();
 
       return Result(isSuccess: true, message: response.data['message']);
     }  on DioException catch (e) {

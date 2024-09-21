@@ -3,6 +3,7 @@ import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_spacing.dart';
 import 'package:penger/resources/app_strings.dart';
 import 'package:penger/resources/app_styles.dart';
+import 'package:penger/utils/helper.dart';
 
 class SignupSuccessScreen extends StatefulWidget {
   const SignupSuccessScreen({super.key});
@@ -27,5 +28,16 @@ class _SignupSuccessScreenState extends State<SignupSuccessScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initScreen();
+  }
+
+  Future<void> _initScreen() async {
+    final route = await Helper.initialRoute();
+    Future.delayed(const Duration(seconds: 3), () => Navigator.of(context).pushReplacementNamed(route));
   }
 }
