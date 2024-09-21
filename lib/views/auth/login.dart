@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:penger/controllers/account.dart';
 import 'package:penger/controllers/auth.dart';
 import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
@@ -140,8 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     setState(() => _isLoading = true);
 
-    var result = await AuthController.login(
-        _emailEditingController.text.trim(), _passwordEditingController.text);
+    var result = await AuthController.login(_emailEditingController.text.trim(), _passwordEditingController.text);
 
     setState(() => _isLoading = false);
 

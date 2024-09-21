@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:penger/models/account.dart';
+import 'package:penger/models/account_type.dart';
+import 'package:penger/models/currency.dart';
 import 'package:penger/models/user.dart';
 import 'package:penger/resources/app_colours.dart';
 import 'package:penger/resources/app_routes.dart';
@@ -21,6 +24,9 @@ import 'package:penger/views/onboarding/walkthrough.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(CurrencyModelAdapter());
+  Hive.registerAdapter(AccountTypeModelAdapter());
+  Hive.registerAdapter(AccountModelAdapter());
   runApp(const MyApp());
 }
 
